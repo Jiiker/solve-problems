@@ -1,26 +1,22 @@
-const rl = require('readline').createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const input = require("fs")
+  .readFileSync(process.platform === "linux" ? "dev/stdin" : "./input.txt")
+  .toString()
+  .trim()
+  .split("\n");
 
 let N, M;
 const S = new Set();
 const result = [];
-let lineCount = 0;
 
-rl.on("line", (line) => {
-  if (lineCount === 0) {
+input.forEach((line, index) => {
+  if (index === 0) {
     [N, M] = line.split(" ").map(Number);
-  } else if (lineCount <= N) {
+  } else if (index <= N) {
     S.add(line);
   } else {
     line.split(",").forEach((el) => S.delete(el.trim()));
     result.push(S.size);
   }
-  lineCount++;
-
-  if (lineCount === N + M + 1) {
-    console.log(result.join("\n"));
-    rl.close();
-  }
 });
+
+console.log(result.join("\n"));
