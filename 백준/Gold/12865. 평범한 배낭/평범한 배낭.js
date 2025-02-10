@@ -3,7 +3,7 @@ const input = require("fs")
   .toString()
   .trim()
   .split("\n")
-  .map((el) => el.split(" ").map(Number));
+  .map((el) => el.split(' ').map(Number));
 
 const [N, K] = input[0];
 
