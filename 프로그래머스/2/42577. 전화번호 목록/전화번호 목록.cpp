@@ -2,31 +2,24 @@
 
 using namespace std;
 
-bool phone_cmp_fn(string num1, string num2) {
-    if (num1.length() >= num2.length()) {
-        for (int i = 0; i < num2.length(); i++) {
-            if (num1[i] != num2[i])
-                return false;
-        }
-    } else {
-        for (int i = 0; i < num1.length(); i++) {
-            if (num1[i] != num2[i])
-                return false;
+bool solution(vector<string> phone_book) {
+    bool answer = true;
+    set<string> prefixes;
+    
+    for (int i = 0; i < phone_book.size(); i++) {
+        string prefix = "";
+        
+        for (int j = 0; j < phone_book[i].length() - 1; j++) {
+            prefix += phone_book[i][j];
+            prefixes.insert(prefix);
         }
     }
     
-    return true;
-}
-
-bool solution(vector<string> phone_book) {
-    bool answer = true;
-    sort(phone_book.begin(), phone_book.end());
-    
-    for (int i = 0; i < phone_book.size() - 1; i++) {  
-        if (phone_cmp_fn(phone_book[i], phone_book[i+1]))
+    for (int i = 0; i < phone_book.size(); i++) {
+        if (prefixes.count(phone_book[i])) {
             answer = false;
+        }
     }
     
     return answer;
 }
-
