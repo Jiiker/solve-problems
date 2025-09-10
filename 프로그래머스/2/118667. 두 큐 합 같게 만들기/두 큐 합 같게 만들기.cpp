@@ -5,43 +5,34 @@ using namespace std;
 int solution(vector<int> queue1, vector<int> queue2) {
     int answer = -1;
     int n = queue1.size();
+    long long q1_sum = 0, q2_sum = 0;
     long long dest_sum = 0;
-    long long sum = 0;
     int cnt = 0;
-    vector<int> circled_Q;
-    int l = 0, r = n - 1;
     
     for (int i = 0; i < n; i++) {
-        dest_sum += queue1[i];
-        dest_sum += queue2[i];
+        q1_sum += queue1[i];
+        q2_sum += queue2[i];
     }
     
-    if (dest_sum % 2 == 1) return answer;
-    dest_sum /= 2;
+    if ((q1_sum + q2_sum) % 2 == 1) return answer;
+    dest_sum = (q1_sum + q2_sum) / 2;
     
-    for (int i = 0; i < n; i++) {
-        circled_Q.push_back(queue1[i]);
-        sum += queue1[i];
-    }
-    for (int i = 0; i < n; i++) {
-        circled_Q.push_back(queue2[i]);
-    }
-    
-    while (sum != dest_sum && cnt < 3 * n) {
-        if (sum < dest_sum) {
-            r++;
-            cnt++;
-            if (r == 2 * n) r = 0;
-            sum += circled_Q[r];
+    while (q1_sum != dest_sum && cnt < n * 3) {
+        if (q1_sum < dest_sum) {
+            queue1.push_back(queue2[0]);
+            q1_sum += queue2[0];
+            queue2.erase(queue2.begin());
         } else {
-            sum -= circled_Q[l];
-            l++;
-            cnt++;
-            if (l == 2 * n) l = 0;
+            q1_sum -= queue1[0];
+            queue2.push_back(queue1[0]);
+            queue1.erase(queue1.begin());
         }
+        cnt++;
     }
     
-    if (sum == dest_sum) answer = cnt;
+    if (q1_sum == dest_sum)  {
+        answer = cnt;
+    }
     
     return answer;
 }
